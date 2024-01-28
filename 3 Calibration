@@ -22,7 +22,7 @@ void Calibration::correctAxis(const size_t link_index)
   // theta), there follows a passive segment (with a and alpha) and the next d/theta-segment after
   // that.
   //
-  // In principle, the d parameter of the first segment gets set to zero, first. With this change,
+  // In principle, the d parameter of the first segment gets set to zero first. With this change,
   // the kinematic structure gets destroyed, which has to be corrected:
   //   - With setting d to 0, both the start and end points of the passive segment move along the
   //   rotational axis of the start segment. Instead, the end point of the passive segment has to
@@ -34,7 +34,6 @@ void Calibration::correctAxis(const size_t link_index)
 
   if (chain_[2 * link_index](2, 3) == 0.0)
   {
-    // Nothing to do here.
     return;
   }
 
