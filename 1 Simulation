@@ -8,8 +8,33 @@ from datetime import datetime
 import pybullet_data
 from collections import namedtuple
 from attrdict import AttrDict
+from simulation import Simulation
+from UR5 import UR5RobotServer
+import math
+import pybullet
+import time
+
 
 ROBOT_URDF_PATH = "./1 URDF.urdf"
+
+sim = Simulation()
+
+sim.step_joints([0, -math.pi/2, -math.pi/2, -math.pi/2, -math.pi/2, 0])
+sim.add_gui_sliders()
+time.sleep(1)
+
+while True:
+    x = pybullet.readUserDebugParameter(sim.sliders[0])
+    y = pybullet.readUserDebugParameter(sim.sliders[1])
+    z = pybullet.readUserDebugParameter(sim.sliders[2])
+    Rx = pybullet.readUserDebugParameter(sim.sliders[3])
+    Ry = pybullet.readUserDebugParameter(sim.sliders[4])
+    Rz = pybullet.readUserDebugParameter(sim.sliders[5])
+    position = [x,y,z]
+    orientation = [Rx, Ry, Rz]  
+    joint_angles = sim.calculate_ik(position, orientation)
+    sim.step_joints(joint_angles)
+
 
 class UR5Sim():
   
@@ -97,7 +122,7 @@ class UR5Sim():
             restPoses=rest_poses
         )
         return joint_angles
-       
+
 
     def add_gui_sliders(self):
         self.sliders = []
@@ -123,8 +148,7 @@ class UR5Sim():
         position, orientation = linkstate[0], linkstate[1]
         return (position, orientation)
 
-def demo_simulation():
-    """ Demo program showing how to use the sim """
+def simulation():
     sim = UR5Sim()
     sim.add_gui_sliders()
     while True:
@@ -134,4 +158,4 @@ def demo_simulation():
         sim.check_collisions()
 
 if __name__ == "__main__":
-    demo_simulation()
+    simulation()
