@@ -1,7 +1,7 @@
 // Leni's Note —
 // Velocity PID is used to perform closed-loop velocity control on a position or velocity axis with the central gains of Proportional, Integral, and Differential.
 // Velocity PID provides very good control and is suitable for nearly all motion control systems with velocity feedback. 
-
+// D_n = (V_Target_n - V_Actual_n) x K_P
 
 namespace controller_interface
 {
